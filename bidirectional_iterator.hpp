@@ -2,16 +2,29 @@
 
 #include <memory>
 #include "conditional.hpp"
-#include "map.hpp"
 #include <cstddef>
 #include <iterator>
 
 namespace ft {
-
+	
+	template <typename T>
+	struct			rbtNode {
+		typedef rbtNode<T>*	nodePtr;
+		typedef T			valueType;
+		valueType 			value;
+		nodePtr				leftNode;
+		nodePtr				rightNode;
+		nodePtr				parentNode;
+		bool				color;
+		bool				isEnd;
+	};
+	
 	template <bool isConst, class T>
 	class bidirectional_iterator {
 	public:
 		typedef typename ft::conditional<isConst, const T, T>::type	value_type;
+		typedef rbtNode<T>											node;
+		typedef typename node::nodePtr 								nodePtr;
 		typedef value_type*											pointer;
 		typedef value_type&											reference;
 		typedef std::ptrdiff_t										difference_type;
@@ -33,39 +46,39 @@ namespace ft {
 			return *this;
 		}
 		
-		bidirectional_iterator(rbtNode<T>* ptr): _ptr(ptr), NIL(NULL) {}
+		bidirectional_iterator(nodePtr ptr): _ptr(ptr), NIL(NULL) {}
 		
-		rbtNode<T>* const getPointer() const { return _ptr; }
+		nodePtr getPointer() const { return _ptr; }
 		
 		reference operator*() { return _ptr; }
 		
 		pointer operator->() {return &_ptr; }
 		
-		bidirectional_iterator & const operator++() {
+		bidirectional_iterator const & operator++() {
 			++this->_ptr;
 			return *this;
 		}
 		
-		bidirectional_iterator & const operator++(int) {
+		bidirectional_iterator const & operator++(int) {
 			bidirectional_iterator tmp(*this);
 			++this->_ptr;
 			return tmp;
 		}
 		
-		bidirectional_iterator & const operator--() {
+		bidirectional_iterator const & operator--() {
 			++this->_ptr;
 			return *this;
 		}
 		
-		bidirectional_iterator & const operator--(int) {
+		bidirectional_iterator const & operator--(int) {
 			bidirectional_iterator tmp(*this);
 			++this->_ptr;
 			return tmp;
 		}
 	
 	private:
-		rbtNode<T>* _ptr;
-		rbtNode<T>* NIL;
+		nodePtr _ptr;
+		nodePtr NIL;
 	};
 	
 	template<bool firstIsConst, bool secondIsConst, class T1, class T2>
