@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "../conditional/conditional.hpp"
+#include "conditional.hpp"
 #include <cstddef>
 #include <iterator>
 
