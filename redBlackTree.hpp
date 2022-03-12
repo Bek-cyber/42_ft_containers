@@ -173,26 +173,116 @@ namespace ft {
 		}
 		
 		void deleteFromRBT(nodePtr z) {
-			if (isEmpty(z->leftNode) == true && isEmpty(z->rightNode) == true) {
-				if (z == root_)
-					root_ = nill_;
-				else if (z == z->parentNode->leftNode)
-					z->parentNode->leftNode = nill_;
-				else
-					z->parentNode->rightNode = nill_;
-				return;
+			nodePtr y = z, x;
+			bool yColor = y->color;
+			if (isEmpty(z->leftNode) == true) {
+				x = z->rightNode;
+				transplantRBT(z, z->rightNode);
 			}
-			nodePtr x = nill_, y = nill_;
-			else if (isEmpty(z->leftNode) == false && isEmpty(z->rightNode) == false) {
-			
+			else if (isEmpty(z->rightNode) == true) {
+				x = z->leftNode;
+				transplantRBT(z, z->leftNode);
 			}
+			else {
+				y = minimumNode(z->rightNode);
+				yColor = y->color;
+				x = y->rightNode;
+				if(y->parentNode == z) {
+					x->parentNode = z;
+				}
+				else {
+					rbTransplant(y, y->rightNode);
+					y->rightNode = z->rightNode;
+					y->rightNode->parentNode = y;
+				}
+				rbTransplant(z, y);
+				y->leftNode = z->leftNode;
+				y->leftNode->parentNode = y;
+				y->color = z->color;
+			}
+			if(yColor == false)
+				deleteFixup(x);
+		}
+		
+		void fixDeletion(nodePtr x) {
+			while (x != root_ && x->color == BLACK) {
+				if (x == x->parentNode->leftNode) {
+					brother = x->parentNode->rightNode;
+					if (brother->color == RED) {
+						x->color = BLACK
+						x->parentNode->color = RED
+						rotateToLeft(x);
+						brother = x->parentNode->rightNode;
+					}
+					if (brother->leftNode->color == BLACK && brother->rightNode->color == BLACK) {
+						brother->color = RED
+						x = x->parentNode;
+					}
+					else {
+						if (brother->rightNode->color == BLACK) {
+							brother->leftNode->color = BLACK
+							brother->color = RED
+							rotateToRight(brother);
+							brother = x->parentNode->rightNode;
+						}
+						brother->color = x->parentNode->color;
+						x->parent->color = BLACK
+						brother->rightNode->color = BLACK
+						rotateToLeft(x->parentNode);
+						x = root_;
+					}
+				}
+				else {
+					brother = x->parentNode->leftNode;
+					if (brother->color == RED) {
+						x->color = BLACK
+						x->parentNode->color = RED
+						rotateToRight(x);
+						brother = x->parentNode->leftNode;
+					}
+					if (brother->leftNode->color == BLACK && brother->rightNode->color == BLACK) {
+						brother->color = RED
+						x = x->parentNode;
+					}
+					else {
+						if (brother->leftNode->color == BLACK) {
+							brother->rightNode->color = BLACK
+							brother->color = RED
+							rotateToLeft(brother);
+							brother = x->parentNode->leftNode;
+						}
+						brother->color = x->parentNode->color;
+						x->parent->color = BLACK
+						brother->leftNode->color = BLACK
+						rotateToRight(x->parentNode);
+						x = root_;
+					}
+				}
+			}
+			x->color = BLACK
+		}
+		
+		nodePtr minimumNode(nodePtr x) {
+			if (isEmpty(x) == false) {
+				while (isEmpty(x->leftNode) == false)
+					x = x->leftNode;
+			}
+			return x;
+		}
+		
+		void transplantRBT(nodePtr x, nodePtr z) {
+			if (isEmpty(x->parentNode) == true)
+				root_ = z;
+			else if (x == x->parentNode->leftNode)
+				x->parentNode->leftNode = z;
+			else
+				x-.parerntNode->rightNode = z;
+			z->parentNode = x->parentNode;
 		}
 		
 		bool isEmpty(nodePtr node) {
 			return node == nill_ || node->isEnd == true;
 		}
-		
-		
 
 	private:
 		valueComapre			compare_;
