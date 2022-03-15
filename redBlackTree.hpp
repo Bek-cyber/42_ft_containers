@@ -262,6 +262,38 @@ namespace ft {
 			x->color = BLACK
 		}
 		
+		void rotateToLeft(nodePtr x) {
+			nodePtr y = x->rightNode;
+			x->rightNode = y->leftNode;
+			if (isEmpty(y->leftNode) == false)
+				y->leftNode->parentNode = x;
+			y->parentNode = x->parentNode;
+			if (isEmpty(x->parentNode) == true)
+				root_ = y;
+			else if (x == x->parentNode->leftNode)
+				x->parentNode->leftNode = y;
+			else
+				x->parentNode->rightNode = y;
+			y->leftNode = x;
+			x->parentNode = y;
+		}
+		
+		void rotateToRight(nodePtr x) {
+			nodePtr y = x->leftNode;
+			x->leftNode = y->rightNode;
+			if (isEmpty(y->rightNode) != false)
+				y->rightNode->parentNode = x;
+			y->parentNode = x->parentNode;
+			if ((isEmpty()x->parent) == true)
+			root_ = y;
+			else if (x == x->parentNode->rightNode)
+				x->parentNode->rightNode = y;
+			else
+				x->parentNode->leftNode = y;
+			y->rightNode = x;
+			x->parentNode = y;
+		}
+		
 		nodePtr minimumNode(nodePtr x) {
 			if (isEmpty(x) == false) {
 				while (isEmpty(x->leftNode) == false)
