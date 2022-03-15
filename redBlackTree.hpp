@@ -134,10 +134,10 @@ namespace ft {
 				return;
 			}
 			nodePtr parent = z->parent;
-			while (parent == RED) {
+			while (parent == true) {
 				if (parent == parent->parent->leftNode) {
 					nodePtr uncle = z->parent->rightNode;
-					if (isEmpty(uncle) == false && uncle->color == RED) {
+					if (isEmpty(uncle) == false && uncle->color == true) {
 						parent = BLACK
 						uncle = BLACK
 						parent->parentNode->color = RED
@@ -153,7 +153,7 @@ namespace ft {
 					}
 				} else {
 					nodePtr uncle = z->parent->leftNode;
-					if (isEmpty(uncle) == false && uncle->color == RED) {
+					if (isEmpty(uncle) == false && uncle->color == true) {
 						parent = BLACK
 						uncle = BLACK
 						parent->parentNode->color = RED
@@ -205,21 +205,21 @@ namespace ft {
 		}
 		
 		void fixDeletion(nodePtr x) {
-			while (x != root_ && x->color == BLACK) {
+			while (x != root_ && x->color == false) {
 				if (x == x->parentNode->leftNode) {
-					brother = x->parentNode->rightNode;
-					if (brother->color == RED) {
+					nodePtr brother = x->parentNode->rightNode;
+					if (brother->color == true) {
 						x->color = BLACK
 						x->parentNode->color = RED
 						rotateToLeft(x);
 						brother = x->parentNode->rightNode;
 					}
-					if (brother->leftNode->color == BLACK && brother->rightNode->color == BLACK) {
+					if (brother->leftNode->color == false && brother->rightNode->color == false) {
 						brother->color = RED
 						x = x->parentNode;
 					}
 					else {
-						if (brother->rightNode->color == BLACK) {
+						if (brother->rightNode->color == false) {
 							brother->leftNode->color = BLACK
 							brother->color = RED
 							rotateToRight(brother);
@@ -233,19 +233,19 @@ namespace ft {
 					}
 				}
 				else {
-					brother = x->parentNode->leftNode;
-					if (brother->color == RED) {
+					nodePtr brother = x->parentNode->leftNode;
+					if (brother->color == true) {
 						x->color = BLACK
 						x->parentNode->color = RED
 						rotateToRight(x);
 						brother = x->parentNode->leftNode;
 					}
-					if (brother->leftNode->color == BLACK && brother->rightNode->color == BLACK) {
+					if (brother->leftNode->color == false && brother->rightNode->color == false) {
 						brother->color = RED
 						x = x->parentNode;
 					}
 					else {
-						if (brother->leftNode->color == BLACK) {
+						if (brother->leftNode->color == false) {
 							brother->rightNode->color = BLACK
 							brother->color = RED
 							rotateToLeft(brother);
@@ -284,7 +284,7 @@ namespace ft {
 			if (isEmpty(y->rightNode) != false)
 				y->rightNode->parentNode = x;
 			y->parentNode = x->parentNode;
-			if ((isEmpty()x->parent) == true)
+			if ((isEmpty(x->parent)) == true)
 			root_ = y;
 			else if (x == x->parentNode->rightNode)
 				x->parentNode->rightNode = y;
@@ -308,7 +308,7 @@ namespace ft {
 			else if (x == x->parentNode->leftNode)
 				x->parentNode->leftNode = z;
 			else
-				x-.parerntNode->rightNode = z;
+				x->parerntNode->rightNode = z;
 			z->parentNode = x->parentNode;
 		}
 		
